@@ -1,13 +1,15 @@
 
 
 <?php
+$ref="";
+$four=Array();
 $error_ref="";
 $error_lib="";
-if (isset($_GET['ref']) && isset($_GET['lib'])&& isset($_GET['prix'])&& isset($_GET['qt'])&& isset($_GET['four'])&& isset($_GET['pv'])){
+if (isset($_GET['ref']) && isset($_GET['lib'])&& isset($_GET['prix'])&& isset($_GET['qt'])){
     $ref=$_GET['ref'];
     $lib=$_GET['lib'];
     $qt=$_GET['qt'];
-    $four=$_GET['four'];
+    if (isset($_GET['four'])) $four=$_GET['four'];
     $pv=$_GET['pv'];
     $prix=$_GET['prix'];
     if (!empty($ref) && !empty($lib)){
@@ -27,6 +29,7 @@ if (isset($_GET['ref']) && isset($_GET['lib'])&& isset($_GET['prix'])&& isset($_
 else{
     if (empty($ref)) $error_ref="la réference ne doit pas etre vide";
     if (empty($lib)) $error_lib="le libellé ne doit pas etre vide";
+    if (!isset($four) or empty($four)) $error_lib="Tu doit choisir un fournisseur";
     ?>
     <!DOCTYPE html>
 <html lang="en">
@@ -48,14 +51,14 @@ else{
     <input type="text" name="qt"><br>
     <label for="four">Fournisseur</label>
     <select name="four[]" multiple>
-        <option value="f1">Fournisseur1</option>
-        <option value="f2">Fournisseur2</option>
-        <option value="f3">Fournisseur3</option>
+        <option value="f1" <?php if(in_array("f1",$four)) echo "selected"; ?>>Fournisseur1</option>
+        <option value="f2" <?php if(in_array("f2",$four)) echo "selected"; ?>>Fournisseur2</option>
+        <option value="f3" <?php if(in_array("f3",$four)) echo "selected"; ?>>Fournisseur3</option>
     </select><br>
     <label for="pv">Point de vente</label><br>
-    <input type="checkbox" name="pv[]" value="sfax">Sfax<br>
-    <input type="checkbox" name="pv[]" value="sousse">Sousse<br>
-    <input type="checkbox" name="pv[]" value="tunis">Tunis<br>
+    <input type="checkbox" name="pv[]" value="sfax" <?php if(in_array("sfax",$pv)) echo "checked"; ?> >Sfax<br>
+    <input type="checkbox" name="pv[]" value="sousse" <?php if(in_array("sousse",$pv)) echo "checked"; ?>>Sousse<br>
+    <input type="checkbox" name="pv[]" value="tunis" <?php if(in_array("tunis",$pv)) echo "checked"; ?>>Tunis<br>
     <input type="submit" value="Envoyer">
 
 </form>
@@ -95,12 +98,12 @@ else
     <input type="text" name="qt"><br>
     <label for="four">Fournisseur</label>
     <select name="four[]" multiple>
-        <option value="f1">Fournisseur1</option>
+        <option value="f1" selected>Fournisseur1</option>
         <option value="f2">Fournisseur2</option>
         <option value="f3">Fournisseur3</option>
     </select><br>
     <label for="pv">Point de vente</label><br>
-    <input type="checkbox" name="pv[]" value="sfax">Sfax<br>
+    <input type="checkbox" name="pv[]" value="sfax" checked>Sfax<br>
     <input type="checkbox" name="pv[]" value="sousse">Sousse<br>
     <input type="checkbox" name="pv[]" value="tunis">Tunis<br>
     <input type="submit" value="Envoyer">
