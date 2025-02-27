@@ -27,7 +27,25 @@ class Article{
           $s.="</select></td></tr>";
           return $s; 
       }
-      
+      public static function getAll(){
+        $bdd=connexpdo();
+        $l=array();
+        $req="SELECT * FROM article" ;
+        $sql = $bdd->query($req) or die($bdd->errorInfo()[2]);
+        while($row=$sql->fetch(PDO::FETCH_BOTH)){
+          $f=Fournisseur::getByArticle($row[0]);
+          $l[]=new Article($row[0],$row[1],$row[2],$row[3],$f);
+        }
+
+        return $l;
+
+      }
+      public static function insert($art){
+      }
+      public static function update($art){
+      }
+      public static function delete($ref){
+      }
 
 }
 ?>
