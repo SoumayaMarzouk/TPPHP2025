@@ -24,7 +24,7 @@ class Article{
             $s.=$f;
         
           }
-          $s.="</select></td></tr>";
+          $s.="</select></td><td><a href='../control/articleControl.php?del=supprimer&ref=".$this->ref."'>Supprimer</a></td><td><a href='../vue/articleForm.php?ref=".$this->ref."'>Edit</a></td></tr>";
           return $s; 
       }
       public static function getAll(){
@@ -41,10 +41,64 @@ class Article{
 
       }
       public static function insert($art){
+        $bdd=connexpdo();
+        try{
+        $stmt=$bdd->prepare("INSERT INTO article VALUES(?,?,?,?)");
+        $stmt->bindParam(1,$art->ref); 
+        $stmt->bindParam(2,$art->lib);
+        $stmt->bindParam(3,$art->prix);
+        $stmt->bindParam(4,$art->qt);
+        $stmt->execute();
+        $stmt=$bdd->prepare("INSERT INTO article_fournisseur VALUES(?,?)");
+        $stmt->bindParam(1,$ref); 
+        $stmt->bindParam(2,$id);
+        $ref=$art->ref;
+        foreach ($art->four as $f){
+          $id=$f->id;
+          // insertion d'une ligne
+          $stmt->execute();
+
+        }
+      }catch(Exception $e){
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+     
+      }
+        
       }
       public static function update($art){
+        $bdd=connexpdo();
+        //try{
+        $stmt=$bdd->prepare("UPDATE article set lib=?,prix=?,qt=? where ref=?");
+        $stmt->bindParam(4,$art->ref); 
+        $stmt->bindParam(1,$art->lib);
+        $stmt->bindParam(2,$art->prix);
+        $stmt->bindParam(3,$art->qt);
+        $stmt->execute();
+        $stmt=$bdd->prepare("DELETE from article_fournisseur where article=?");
+        $stmt->bindParam(1,$art->ref); 
+        $stmt->execute();
+        $stmt=$bdd->prepare("INSERT INTO article_fournisseur VALUES(?,?)");
+        $stmt->bindParam(1,$ref); 
+        $stmt->bindParam(2,$id);
+        $ref=$art->ref;
+        foreach ($art->four as $f){
+          $id=$f->id;
+          // insertion d'une ligne
+          $stmt->execute();
+
+        }
+      //}catch(Exception $e){
+      //  echo 'Caught exception: ',  $e->getMessage(), "\n";}
       }
       public static function delete($ref){
+        $bdd=connexpdo();
+        $stmt=$bdd->prepare("DELETE from article_fournisseur where article=?");
+        $stmt->bindParam(1,$ref); 
+        $stmt->execute();
+        $stmt=$bdd->prepare("DELETE from article where ref=?");
+        $stmt->bindParam(1,$ref); 
+        $stmt->execute();
+
       }
 
 }

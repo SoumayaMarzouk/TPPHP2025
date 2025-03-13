@@ -9,7 +9,7 @@
     <h1>Nouvel Article</h1>
 <form action="../control/articleControl.php" method="get">
     <label for="ref">Référence</label>
-    <input type="text" name="ref"><br>
+    <input type="text" name="ref" value=<?php if(isset($_GET['ref'])) echo $_GET['ref']; ?>><br>
     <label for="lib">Libéllé</label>
     <input type="text" name="lib"><br>
     <label for="prix">Prix</label>
@@ -27,7 +27,9 @@
 
     </select><br>
 
-    <input type="submit" value="Envoyer">
+    <input type="submit" name='add' value="Ajouter">
+    <input type="submit" name='up' value="Modifier">
+    <input type="submit" name='del' value="Supprimer">
 
 </form>
 <h1>Liste des articles</h1>
