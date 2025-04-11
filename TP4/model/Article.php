@@ -24,7 +24,12 @@ class Article{
             $s.=$f;
         
           }
-          $s.="</select></td><td><a href='../control/articleControl.php?del=supprimer&ref=".$this->ref."'>Supprimer</a></td><td><a href='../vue/articleForm.php?ref=".$this->ref."'>Edit</a></td></tr>";
+          $s.="</select></td><td><a href='../control/articleControl.php?refSupp=".$this->ref."'>Supprimer</a></td><td><a href='../vue/articleForm.php?ref=".$this->ref."&lib=".$this->lib."&qt=".$this->qt."&prix=".$this->prix;
+          
+          foreach ($this->four as $f){
+            $s.="&".$f->id."=ok";
+          } 
+          $s.="'>Edit</a></td></tr>";
           return $s; 
       }
       public static function getAll(){
@@ -40,6 +45,34 @@ class Article{
         return $l;
 
       }
+
+      public static function search($ref,$lib,$p1,$p2,$q1,$q2){
+        $bdd=connexpdo();
+        $l=array();
+        $req="SELECT * FROM article where 1=1" ;
+        if (!empty($ref))
+          $req.=" and ref like '%$ref%'";
+          if (!empty($lib))
+          $req.=" and lib like'%$lib%'";
+          if (!empty($p1))
+          $req.=" and prix>$p1";
+          if (!empty($p2))
+          $req.=" and prix<$p2";
+          if (!empty($q1))
+          $req.=" and qt>$q1";
+          if (!empty($q2))
+          $req.=" and qt<$q2";
+           
+        $sql = $bdd->query($req) or die($bdd->errorInfo()[2]);
+        while($row=$sql->fetch(PDO::FETCH_BOTH)){
+          $f=Fournisseur::getByArticle($row[0]);
+          $l[]=new Article($row[0],$row[1],$row[2],$row[3],$f);
+        }
+
+        return $l;
+
+      }
+
       public static function insert($art){
         $bdd=connexpdo();
         try{
