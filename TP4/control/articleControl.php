@@ -1,4 +1,10 @@
 <?php
+
+session_start();
+//if (!isset($_COOKIE['login']))
+if(!isset($_SESSION['login']))
+    header("location:../vue/UserForm.html");
+
 include("../model/Article.php");
 include("../model/Fournisseur.php");
 $artList=Article::getAll();

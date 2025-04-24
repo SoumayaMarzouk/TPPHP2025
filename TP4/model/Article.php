@@ -29,7 +29,7 @@ class Article{
           foreach ($this->four as $f){
             $s.="&".$f->id."=ok";
           } 
-          $s.="'>Edit</a></td></tr>";
+          $s.="'>Edit</a></td><td><a href='../vue/panierQt.php?ref=".$this->ref."'>Ajouter Panier</a></td></tr>";
           return $s; 
       }
       public static function getAll(){
@@ -43,6 +43,28 @@ class Article{
         }
 
         return $l;
+
+      }
+      public static function verifQt($ref,$qt){
+        $bdd=connexpdo();
+        $l=array();
+        $req="SELECT * FROM article where ref='$ref'" ;
+        $sql = $bdd->query($req) or die($bdd->errorInfo()[2]);
+        $row=$sql->fetch(PDO::FETCH_BOTH);
+        if($row['qt']>=$qt)
+          return true;
+        else
+        return false;
+
+      
+      }
+      public static function getPrice($ref){
+        $bdd=connexpdo();
+        $l=array();
+        $req="SELECT * FROM article where ref='$ref'" ;
+        $sql = $bdd->query($req) or die($bdd->errorInfo()[2]);
+        $row=$sql->fetch(PDO::FETCH_BOTH);
+        return $row['prix'];
 
       }
 
